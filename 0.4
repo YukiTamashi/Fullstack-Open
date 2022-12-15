@@ -1,0 +1,16 @@
+browser -> server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+server -> browser: redirects to /exampleapp/note
+browser -> server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+server -> browser: HTML
+browser -> server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server -> browser: main.css
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server ->browser: main.js
+
+//executes delayed lambda function
+
+
+browser -> server: https://studies.cs.helsinki.fi/exampleapp/data.json
+server -> browser: [{"content":"wwweee","date":"2022-12-15T12:52:24.265Z"},{...}]
+browser -> server: GET https://studies.cs.helsinki.fi/favicon.ico
+server -> browser: HTML(Course Stats)
