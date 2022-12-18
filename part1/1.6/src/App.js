@@ -21,9 +21,9 @@ const Button = (props) => (
   <button onClick={props.event}>{props.text}</button>
 )
 
-const Display = (props) => {
+const StatisticLine = (props) => {
   for (let key in props){ 
-  return <p>{key} {props[key]}</p>
+  return <tr><td>{key}</td><td>{props[key]}</td></tr>
   }
 }
 
@@ -31,15 +31,30 @@ const Statistics = ({good, neutral, bad}) => {
   const total = good + neutral + bad;
   const average = (good - bad)/total
   const positive = good/total;
-  return <div>
-    <h2>statistics</h2>
-    <Display good={good} />
-    <Display neutral={neutral} />
-    <Display bad={bad} />
-    <Display total={total} />
-    <Display average={average} />
-    <Display positive={positive + " %"} />
-  </div>
+  if (total !== 0){
+    return(
+    <div>
+      <h2>statistics</h2>
+      <table>
+        <tbody>
+          <StatisticLine good={good} />
+          <StatisticLine neutral={neutral} />
+          <StatisticLine bad={bad} />
+          <StatisticLine total={total} />
+          <StatisticLine average={average} />
+          <StatisticLine positive={positive + " %"} />
+        </tbody>
+      </table>
+    </div> )
+  }
+  else{
+    return (
+    <div>
+      <h2>statistics</h2>
+      <p>No feedback given</p>
+    </div>
+    )
+  }
 }
 
 export default App
