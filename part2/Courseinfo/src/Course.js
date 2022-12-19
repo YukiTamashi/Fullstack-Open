@@ -1,14 +1,12 @@
 const Course = ({course}) => (
     <div>
-      <Header course={course} />
+      <Header name={course.name} />
       <Content parts={course.parts} />
       <Total parts={course.parts} />
     </div>
 )
 
-const Header = (props) => (
-    <h1>{props.course.name}</h1>
-)
+const Header = ({name}) => (<h3>{name}</h3>)
 
 const Content = ({parts}) => (
     <div>
@@ -16,21 +14,15 @@ const Content = ({parts}) => (
     </div>
 )
   
-const Part = (props) => (
-      <div>
-        <p>
-          {props.part.name} {props.part.exercises}
-        </p>
-      </div>
-)
+const Part = ({part}) => (<p>{part.name} {part.exercises}</p>)
+
 
   
 const Total = ({parts}) => (
-    <div>
-      <p>Number of exercises 
+    <p>
+        <b>Total exercises: </b> 
         {parts.reduce((a, b) =>Number(a+b.exercises), 0)}
-      </p>
-    </div>
+    </p>
 )
 
 export default Course
