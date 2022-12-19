@@ -1,8 +1,8 @@
 const Course = ({course}) => (
     <div>
       <Header course={course} />
-      <Content course={course.parts} />
-      <Total course={course} />
+      <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </div>
 )
 
@@ -10,9 +10,9 @@ const Header = (props) => (
     <h1>{props.course.name}</h1>
 )
 
-const Content = ({course}) => (
+const Content = ({parts}) => (
     <div>
-        {course.map(part => <Part key={part.id} part={part} />)}
+        {parts.map(part => <Part key={part.id} part={part} />)}
     </div>
 )
   
@@ -25,18 +25,12 @@ const Part = (props) => (
 )
 
   
-const Total = (props) => (
+const Total = ({parts}) => (
     <div>
-      <p>Number of exercises {sumExercises(props.course.parts)}</p>
+      <p>Number of exercises 
+        {parts.reduce((a, b) =>Number(a+b.exercises), 0)}
+      </p>
     </div>
 )
-  
-function sumExercises(a){
-    let sum = 0;
-    for (let item of a){
-      sum += item.exercises;
-    }
-    return sum;
-}
 
 export default Course
