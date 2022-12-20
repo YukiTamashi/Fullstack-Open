@@ -29,12 +29,12 @@ const NumbersList = ({ countries }) => {
     <div>
       <h3>Filter Countries</h3>
       <Input value={filter} event={handleFilter} />
-      <List data={countries} filter={filter} />
+      <List data={countries} filter={filter} event={setFilter} />
     </div>
   )
 }
 
-const List = ({ data, filter }) => {
+const List = ({ data, filter, event }) => {
   const filteredData = data
     .filter((data) =>
       IncludesInsensitive(data.name.common, filter));
@@ -50,14 +50,17 @@ const List = ({ data, filter }) => {
     return (
       <ul>{
         filteredData.map((data) =>
-          <CountryShort key={data.flag} country={data} />)
+          <CountryShort key={data.flag} country={data} event={event} />)
       }
       </ul>)
   }
 }
 
-const CountryShort = ({ country }) => (
-  <li>{country.name.common}</li>
+const CountryShort = ({ country, event }) => (
+  <li>
+    {country.name.common}
+    <button onClick={() => event(country.name.common)}>show</button>
+  </li>
 )
 
 const Country = ({ country }) => (
@@ -71,8 +74,10 @@ const Country = ({ country }) => (
     <ul>
       {Object.entries(country.languages).map((lang) => <li key={lang[0]}>{lang[1]}</li>)}
     </ul>
+    <img src={country.flags['png']} alt={country.name.common + " flag"}/>
   </div>
 )
+
 
 const IncludesInsensitive = (toCompare, filter) => (
   toCompare.toLowerCase().includes(filter.toLowerCase())
