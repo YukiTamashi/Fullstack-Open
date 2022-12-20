@@ -63,7 +63,45 @@ const CountryShort = ({ country, event }) => (
   </li>
 )
 
-const Country = ({ country }) => (
+const Country = ({ country }) => {
+  const [weather, setWeather] = useState({})
+  const api_key = process.env.REACT_APP_API_KEY
+  useEffect(() => {
+  axios
+    .get('https://api.openweathermap.org/data/2.5/weather?lat='+
+      country.capitalInfo['latlng'][0]+
+      '&lon='+
+      country.capitalInfo['latlng'][1]+
+      '&units=metric&appid='+api_key)
+    .then(response => {
+      setWeather(response.data)
+  })
+}, )
+  console.log(weather)
+  if (Object.keys(weather).length === 0){
+    return(
+      <CountryData country={country} />
+    )
+  }
+  else{
+    return(
+      <div>
+        <CountryData country={country} />
+        <h2>Weather in {country.capital}</h2>
+        <p>Temperature is {weather.main['temp']} Celsius</p>
+        <img src={'https://openweathermap.org/img/wn/'+weather.weather[0].icon+'@2x.png'} alt={weather.weather[0].description} />
+        <p>Wind: {weather.wind['speed']} m/s</p> 
+      </div>
+      )
+  }
+}
+
+
+const IncludesInsensitive = (toCompare, filter) => (
+  toCompare.toLowerCase().includes(filter.toLowerCase())
+)
+
+const CountryData = ({ country }) => (
   <div>
     <h1>{country.name.common}</h1>
 
@@ -76,11 +114,6 @@ const Country = ({ country }) => (
     </ul>
     <img src={country.flags['png']} alt={country.name.common + " flag"}/>
   </div>
-)
-
-
-const IncludesInsensitive = (toCompare, filter) => (
-  toCompare.toLowerCase().includes(filter.toLowerCase())
 )
 
 const Input = ({ value, event }) => (
