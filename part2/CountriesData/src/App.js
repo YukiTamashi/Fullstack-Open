@@ -80,7 +80,7 @@ const CountryData = ({ country }) => (
     <h1>{country.name.common}</h1>
 
     <p>Capital: {country.capital}</p>
-    <p>Area: {country.area}</p>
+    <p>Area: {country.area} m²</p>
 
     <h3>Languages</h3>
     <ul>
