@@ -1,9 +1,19 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Form from './Form'
 import Input from './Form'
+import axios from 'axios'
 
-const App = ({list}) => {
-  const [persons, setPersons] = useState(list) 
+const App = () => {
+  const [persons, setPersons] = useState([]) 
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log(response)
+        setPersons(response.data)
+      })
+    }, [])
 
   return (
     <div>
