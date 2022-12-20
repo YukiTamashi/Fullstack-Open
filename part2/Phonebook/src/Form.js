@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Server from './Services'
 
 const Form = ({persons, set}) => {
     const [newName, setNewName] = useState('')
@@ -9,11 +10,17 @@ const Form = ({persons, set}) => {
       toCompare.toLowerCase() === compared.toLowerCase())
     const addPerson = (e) => {
       e.preventDefault();
-      if (persons.some(person => MatchesInsensitive(person.name, newName))){
-        alert(`${newName} already on the list`);
+      const filtered = persons.filter(person => MatchesInsensitive(person.name, newName))
+      if (filtered.length !== 0){
+        const newArray = persons.filter(person => person.id !== filtered[0].id) 
+        Server
+          .updatePerson({name: newName, number: newNumber})
+          .then(data => set(newArray.concat(data)))
       }
       else{
-        set(persons.concat({name: newName, number: newNumber, id: persons.length + 1}));
+        Server
+          .newPerson({name: newName, number: newNumber})
+          .then(data => set(persons.concat(data)))
       }
       setNewNumber('');
       setNewName('');
