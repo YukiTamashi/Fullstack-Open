@@ -23,13 +23,15 @@ const updatePerson = (data) => (
             response.data)
 )
 
-const deletePerson = (data) => (
+const deletePerson = (data) => {
+    console.log(data)
+    return (
     axios
         .delete(`${baseUrl}/${data.id}`)
         .then(response =>
             response.data)
 )
-
+        }
 const Server = {
     getPersons,
     newPerson,

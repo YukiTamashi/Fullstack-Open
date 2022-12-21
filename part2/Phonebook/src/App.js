@@ -1,16 +1,10 @@
 import { useState, useEffect } from 'react'
 import Form from './Form'
-import Input from './Form'
 import Server from './Services'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
-  const remove = (data) => {
-    Server
-      .deletePerson(data)
-      .then(removed =>
-        setPersons(persons.filter(person => person.id !== removed.id)))
-  }
+  
 
   useEffect(() => {
       Server
@@ -22,40 +16,54 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Form persons={persons} set={setPersons} />
-      <NumbersList persons={persons} remove={remove} /> 
+      <Form.Form persons={persons} set={setPersons} />
+      <NumbersList persons={persons} setPersons={setPersons} /> 
     </div>
   )
 }
 
 
 
-const NumbersList = ({persons, remove}) => {
+const NumbersList = ({persons, setPersons}) => {
   const [filter, setFilter] = useState('')
   const handleFilter = (e) => setFilter(e.target.value)
   return (
   <div>
     <h3>Numbers</h3>
-    <Input name={'Filter'} value={filter} event={handleFilter} />
-    <List persons={persons} filter={filter} remove={remove} />
+    <Form.Input name={'Filter'} value={filter} event={handleFilter} />
+    <List persons={persons} filter={filter} setPersons={setPersons} />
   </div>
   )
 }
 
-const List = ({persons, filter, remove}) => (
+const List = ({persons, filter, setPersons}) => (
   <ul>
   {persons
     .filter((person) => 
       IncludesInsensitive(person.name, filter))
-    .map((person)=>
-      <Number key={person.id} person={person} remove={remove}/>)
+    .map((person)=>{
+      const remove = () => {
+        Server
+          .deletePerson(person)
+          .then(() =>
+            setPersons(persons.filter(a => a.id !== person.id)))
+          .catch(() => {
+            alert("Person already removed")
+            setPersons(persons.filter(a => a.id !== person.id))})
+      }
+      return <Number key={person.id} person={person} remove={remove}/>
+    }
+      )
   }
   </ul>
 )
 
-const Number =({person, remove}) => (
+const Number =({person, remove}) => {
+  
+  return(
   <li>{person.name} - {person.number}<button onClick={remove}></button></li>
 )
+  }
 
 const IncludesInsensitive = (toCompare, filter) => (
   toCompare.toLowerCase().includes(filter.toLowerCase())

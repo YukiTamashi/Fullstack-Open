@@ -11,10 +11,10 @@ const Form = ({persons, set}) => {
     const addPerson = (e) => {
       e.preventDefault();
       const filtered = persons.filter(person => MatchesInsensitive(person.name, newName))
-      if (filtered.length !== 0){
+      if (filtered.length === 1){
         const newArray = persons.filter(person => person.id !== filtered[0].id) 
         Server
-          .updatePerson({name: newName, number: newNumber})
+          .updatePerson({name: newName, number: newNumber, id: filtered[0].id})
           .then(data => set(newArray.concat(data)))
       }
       else{
@@ -40,4 +40,4 @@ const Input = ({name, value, event}) => (
     <div>{name}: <input value={value} onChange={event}/></div>
   )
 
-export default Form
+export default {Form, Input}
