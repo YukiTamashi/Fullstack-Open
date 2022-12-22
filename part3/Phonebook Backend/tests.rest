@@ -1,11 +1,10 @@
-GET http://localhost:3001/persons
+GET http://localhost:3001/api/persons
 
 ###
-GET http://localhost:3001/persons/1
+GET http://localhost:3001/api/persons/1
 
 ###
-
-POST http://localhost:3001/persons HTTP/1.1
+POST http://localhost:3001/api/persons HTTP/1.1
 content-type: application/json
 
 {
@@ -13,4 +12,4 @@ content-type: application/json
     "number": 123
 }
 ###
-DELETE http://localhost:3001/persons/5
+DELETE http://localhost:3001/api/persons/5

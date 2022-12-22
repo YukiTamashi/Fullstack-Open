@@ -62,10 +62,30 @@ app.delete('/api/persons/:id', (request, response) => {
 app.post('/api/persons', (request, response) =>{
     const data = request.body;
     const newId = getNewId();
+    const name = data.name;
+    const number = data.number;
+    if (name === undefined){
+      return response
+              .status(400)
+              .statusMessage('name field empty')
+              .end();
+    }
+    if (number === undefined){
+      return response
+              .status(400)
+              .statusMessage('number field empty')
+              .end();
+    }
+    if (nonUnique(name)){
+      return response
+              .status(400)
+              .statusMessage('name must be unique')
+              .end();
+    }
 
     const person = {
-        name: data.name,
-        number: data.number,
+        name,
+        number,
         id: newId
     };
 
@@ -76,9 +96,11 @@ app.post('/api/persons', (request, response) =>{
 });
 
 function getNewId() {
-    return (persons.length > 0
-    ?Math.max(...persons.map(p => p.id)) + 1
-    : 1);
+    return Math.floor(Math.random() * 10000000) 
+}
+
+function nonUnique(name) {
+    persons.includes(name)
 }
 
 app.listen(3001);
