@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Server from './Services'
 
-const Form = ({persons, set}) => {
+const Form = ({persons, set, setNotification}) => {
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const handleName = e => setNewName(e.target.value)
@@ -15,12 +15,14 @@ const Form = ({persons, set}) => {
         const newArray = persons.filter(person => person.id !== filtered[0].id) 
         Server
           .updatePerson({name: newName, number: newNumber, id: filtered[0].id})
-          .then(data => set(newArray.concat(data)))
+          .then(data => set(newArray.concat(data)));
+        setNotification({message:`Updated ${newName}`, type: 'Ok'})
       }
       else{
         Server
           .newPerson({name: newName, number: newNumber})
           .then(data => set(persons.concat(data)))
+        setNotification({message: `Added ${newName}`, type: 'Ok'})
       }
       setNewNumber('');
       setNewName('');
